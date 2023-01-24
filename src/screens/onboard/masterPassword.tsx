@@ -6,90 +6,23 @@ import {faKey} from '@fortawesome/free-solid-svg-icons/faKey';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import {AppColors, OnboardStackParamList} from '../../config';
 import {StackScreenContainer, IconButton} from '../../components';
-import {
-  useIntercomStoreMasterPasswordSelector,
-  useWalletStoreMasterPasswordSelector,
-  useGuardianStoreMasterPasswordSelector,
-  useSettingsStoreMasterPasswordSelector,
-} from '../../state';
-import {logEvent} from '../../utils/analytics';
+// import {
+//   useIntercomStoreMasterPasswordSelector,
+//   useWalletStoreMasterPasswordSelector,
+//   useGuardianStoreMasterPasswordSelector,
+//   useSettingsStoreMasterPasswordSelector,
+// } from '../../state';
+// import {logEvent} from '../../utils/analytics';
 
 type Props = NativeStackScreenProps<OnboardStackParamList, 'MasterPassword'>;
 
-export default function MasterPasswordScreen({navigation, route}: Props) {
-  const toast = useToast();
-  const {openMessenger} = useIntercomStoreMasterPasswordSelector();
-  const {loading: walletLoading, verifyEncryptedBackup} =
-    useWalletStoreMasterPasswordSelector();
-  const {loading: guardianLoading, fetchGuardians} =
-    useGuardianStoreMasterPasswordSelector();
-  const {network} = useSettingsStoreMasterPasswordSelector();
-  const [password, setPassword] = useState('');
-  const {enableFingerprint, walletAddress} = route.params;
-  const isLoading = walletLoading || guardianLoading;
-
-  const onForgotPasswordPress = async () => {
-    const walletGuardians = await fetchGuardians(network, walletAddress);
-    if (walletGuardians.magicAccountGuardian) {
-      logEvent('MASTER_PASSWORD_FORGET', {enabled: true});
-      navigation.navigate('EmailRecovery', {
-        walletAddress,
-      });
-    } else {
-      logEvent('MASTER_PASSWORD_FORGET', {enabled: false});
-      toast.show({
-        title: 'Email recovery not enabled for this account',
-        backgroundColor: AppColors.singletons.warning,
-        placement: 'top',
-      });
-    }
-  };
-
-  const onHelpPress = () => {
-    logEvent('OPEN_SUPPORT', {screen: 'MasterPassword'});
-    openMessenger();
-  };
-
-  const onBackPress = () => {
-    logEvent('MASTER_PASSWORD_BACK');
-    navigation.goBack();
-  };
-
-  const navigateNextHandler = async () => {
-    if (!password) {
-      toast.show({
-        title: 'Password is required',
-        backgroundColor: AppColors.singletons.warning,
-        placement: 'top',
-      });
-
-      return;
-    }
-
-    const verifiedWalletInstance = await verifyEncryptedBackup(
-      walletAddress,
-      password,
-    );
-    if (verifiedWalletInstance) {
-      logEvent('MASTER_PASSWORD_CONTINUE');
-      navigation.navigate('WalletRecovered', {
-        enableFingerprint,
-        password,
-        instance: verifiedWalletInstance,
-      });
-    } else {
-      toast.show({
-        title: 'Incorrect password',
-        backgroundColor: AppColors.singletons.warning,
-        placement: 'top',
-      });
-    }
-  };
+export default function MasterPasswordScreen() {
+  // const toast = useToast();
 
   return (
     <StackScreenContainer>
       <HStack justifyContent="space-between">
-        <IconButton icon={faArrowLeft} onPress={onBackPress} />
+        <IconButton icon={faArrowLeft} />
 
         <Text fontWeight={500} fontSize="16px" color="text.4">
           2/2
@@ -108,7 +41,7 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
         mt="27px"
         type="password"
         placeholder="Type in your master password..."
-        onChangeText={setPassword}
+        // onChangeText={setPassword}
         leftElement={
           <Box ml="13px">
             <FontAwesomeIcon icon={faKey} color={AppColors.text[5]} size={18} />
@@ -119,8 +52,8 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
       <Button
         w="100%"
         variant="link"
-        isLoading={isLoading}
-        onPress={onForgotPasswordPress}
+        // isLoading={isLoading}
+        // onPress={onForgotPasswordPress}
         _text={{textAlign: 'center', fontWeight: 600, fontSize: '14px'}}>
         Forgot your password?
       </Button>
@@ -130,14 +63,12 @@ export default function MasterPasswordScreen({navigation, route}: Props) {
       <Button
         w="100%"
         variant="link"
-        onPress={onHelpPress}
+        // onPress={onHelpPress}
         _text={{textAlign: 'center', fontWeight: 600, fontSize: '14px'}}>
         Need help? Start live chat
       </Button>
 
-      <Button isLoading={isLoading} onPress={navigateNextHandler} mt="8px">
-        Continue
-      </Button>
+      <Button mt="8px">Continue</Button>
     </StackScreenContainer>
   );
 }

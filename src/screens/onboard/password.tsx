@@ -14,8 +14,8 @@ import {
   useFingerprintStorePasswordSelector,
   useWalletStorePasswordSelector,
 } from '../../state';
-import {generateSalt} from '../../utils/random';
-import {logEvent} from '../../utils/analytics';
+// import {generateSalt} from '../../utils/random';
+// import {logEvent} from '../../utils/analytics';
 
 type Props = NativeStackScreenProps<OnboardStackParamList, 'Password'>;
 
@@ -39,7 +39,7 @@ export default function PasswordScreen({navigation, route}: Props) {
   };
 
   const onBackPress = () => {
-    logEvent('PASSWORD_BACK');
+    // logEvent('PASSWORD_BACK');
     navigation.goBack();
   };
 
@@ -59,10 +59,10 @@ export default function PasswordScreen({navigation, route}: Props) {
         placement: 'top',
       });
     } else {
-      const salt = generateSalt();
+      // const salt = generateSalt();
       create(password, salt, async () => {
-        logEvent('PASSWORD_CREATE_WALLET', {enableFingerprint});
-        enableFingerprint && setMasterPassword(password, salt);
+        // logEvent('PASSWORD_CREATE_WALLET', {enableFingerprint});
+        // enableFingerprint && setMasterPassword(password, salt);
       });
     }
   };
