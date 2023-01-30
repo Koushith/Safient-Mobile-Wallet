@@ -10,8 +10,8 @@ import {
   useIntercomStoreWalletImportSelector,
   useWalletStoreWalletImportSelector,
 } from '../../state';
-import {isValid} from '../../utils/address';
-import {logEvent} from '../../utils/analytics';
+// import {isValid} from '../../utils/address';
+// import {logEvent} from '../../utils/analytics';
 
 type Props = NativeStackScreenProps<OnboardStackParamList, 'WalletImport'>;
 
@@ -23,39 +23,42 @@ export default function WalletImportScreen({navigation, route}: Props) {
   const {enableFingerprint} = route.params;
 
   const onHelpPress = () => {
-    logEvent('OPEN_SUPPORT', {screen: 'WalletImport'});
-    openMessenger();
+    // logEvent('OPEN_SUPPORT', {screen: 'WalletImport'});
+    // openMessenger();
+    console.log('pressed');
   };
 
   const onBackPress = () => {
-    logEvent('WALLET_IMPORT_BACK');
-    navigation.goBack();
+    // logEvent('WALLET_IMPORT_BACK');
+    // navigation.goBack();
+    console.log('pressed');
   };
 
   const navigateNextHandler = async () => {
-    if (!isValid(address)) {
-      toast.show({
-        title: 'Not a valid address',
-        backgroundColor: AppColors.singletons.warning,
-        placement: 'top',
-      });
+    // if (!isValid(address)) {
+    //   toast.show({
+    //     title: 'Not a valid address',
+    //     backgroundColor: AppColors.singletons.warning,
+    //     placement: 'top',
+    //   });
 
-      return;
-    }
+    //   return;
+    // }
 
-    if (await pingBackup(address)) {
-      logEvent('WALLET_IMPORT_CONTINUE');
-      navigation.navigate('MasterPassword', {
-        enableFingerprint,
-        walletAddress: address,
-      });
-    } else {
-      toast.show({
-        title: 'Wallet not found...',
-        backgroundColor: AppColors.singletons.warning,
-        placement: 'top',
-      });
-    }
+    // if (await pingBackup(address)) {
+    //   logEvent('WALLET_IMPORT_CONTINUE');
+    //   navigation.navigate('MasterPassword', {
+    //     enableFingerprint,
+    //     walletAddress: address,
+    //   });
+    // } else {
+    //   toast.show({
+    //     title: 'Wallet not found...',
+    //     backgroundColor: AppColors.singletons.warning,
+    //     placement: 'top',
+    //   });
+    // }
+    console.log('pressed');
   };
 
   return (
